@@ -127,4 +127,12 @@ nav a {
     .features {
         grid-template-columns: 1fr;
     }
+    .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 60px;
+    height: fit-content;
 }
+}
+
