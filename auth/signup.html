@@ -4,22 +4,45 @@
     <meta charset="UTF-8">
     <title>Sign Up – Nova Editings</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="auth.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 
 <div class="auth-container">
-    <h2>Create Account</h2>
-    <p>Join Nova Editings today</p>
+    <h2>Create Your Account</h2>
+    <p>Join Nova Editings and work with premium clients</p>
 
-    <button class="google-btn">Sign Up with Gmail</button>
+    <!-- Google Sign Up -->
+    <button class="google-btn" onclick="googleLogin()">
+        Sign up with Gmail
+    </button>
 
     <div class="divider">OR</div>
 
-    <input type="text" placeholder="Full Name">
-    <input type="tel" placeholder="Phone Number">
-    <button class="primary-btn">Send OTP</button>
+    <!-- Phone Signup -->
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="tel" id="phone" placeholder="Phone Number (+91XXXXXXXXXX)">
+
+    <div id="recaptcha"></div>
+
+    <button class="primary-btn" onclick="sendOTP()">
+        Send OTP
+    </button>
+
+    <!-- OTP Section -->
+    <input type="text" id="otp" placeholder="Enter OTP" style="display:none">
+    <button class="primary-btn" id="verifyBtn" onclick="verifyOTP()" style="display:none">
+        Verify & Create Account
+    </button>
 
     <p class="switch">
         Already have an account?
@@ -27,6 +50,7 @@
     </p>
 </div>
 
-<script src="auth.js"></script>
+<!-- Auth Logic -->
+<script src="firebase-auth.js"></script>
 </body>
 </html>
