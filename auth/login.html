@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login – Nova Editings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="auth.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+<div class="auth-container">
+    <h2>Welcome Back</h2>
+    <p>Login to Nova Editings</p>
+
+    <button class="google-btn" onclick="googleLogin()">Continue with Gmail</button>
+
+    <div class="divider">OR</div>
+
+    <input type="tel" id="phone" placeholder="Phone Number (+91)">
+    <div id="recaptcha"></div>
+    <button class="primary-btn" onclick="sendOTP()">Send OTP</button>
+
+    <input type="text" id="otp" placeholder="Enter OTP" style="display:none">
+    <button class="primary-btn" id="verifyBtn" onclick="verifyOTP()" style="display:none">
+        Verify OTP
+    </button>
+</div>
+
+<script src="firebase-auth.js"></script>
+</body>
+</html>
