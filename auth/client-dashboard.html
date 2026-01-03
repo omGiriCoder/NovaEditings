@@ -1,3 +1,27 @@
-<h1 style="color:white;background:#0F172A;height:100vh;font-family:Inter">
-Client Dashboard
-</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Client Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+</head>
+<body style="background:#0F172A;color:white;font-family:Inter">
+
+<h1>Client Dashboard</h1>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<!-- Firebase init -->
+<script src="firebase-auth.js"></script>
+
+<!-- Route protection -->
+<script src="route-guard.js"></script>
+
+<script>
+    protectRoute("client");
+</script>
+
+</body>
+</html>

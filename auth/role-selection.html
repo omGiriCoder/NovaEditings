@@ -12,25 +12,31 @@
 
 <div class="auth-container">
     <h2>Select Your Role</h2>
+    <p>This helps us personalize your experience</p>
 
-    <button class="primary-btn" onclick="selectRole('editor')">
-        I am a Video Editor
+    <button class="primary-btn" id="editorBtn">
+        🎬 I am a Video Editor
     </button>
 
-    <button class="primary-btn" style="margin-top:12px" onclick="selectRole('client')">
-        I am a Client
+    <button class="primary-btn" id="clientBtn" style="margin-top:12px">
+        💼 I am a Client
     </button>
 </div>
 
-<!-- ✅ Firebase SDKs -->
+<!-- 🔴 Firebase SDKs (ORDER MATTERS) -->
+<!-- Firebase core -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
+<!-- Firebase Auth -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<!-- Firebase Firestore -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- ✅ Firebase init + auth -->
+<!-- Firebase initialization (your config) -->
 <script src="firebase-auth.js"></script>
 
-<!-- ✅ Role logic -->
+<!-- Role logic (USES firebase, so comes LAST) -->
 <script src="role.js"></script>
 
 </body>
