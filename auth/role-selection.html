@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Role – Nova Editings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="auth.css">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<div class="auth-container">
+    <h2>Select Your Role</h2>
+    <p>How do you want to use Nova Editings?</p>
+
+    <button class="primary-btn" onclick="selectRole('editor')">
+        🎬 I am a Video Editor
+    </button>
+
+    <button class="primary-btn" style="margin-top:12px" onclick="selectRole('client')">
+        💼 I am a Client
+    </button>
+</div>
+
+<script src="role.js"></script>
+</body>
+</html>

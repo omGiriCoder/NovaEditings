@@ -14,7 +14,7 @@ function googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider)
         .then(() => {
-            window.location.href = "dashboard.html";
+            window.location.href = "role-selection.html";
         })
         .catch(err => alert(err.message));
 }
