@@ -1,0 +1,62 @@
+:root {
+    --dark: #0F172A;
+    --blue: #2563EB;
+    --white: #FFFFFF;
+}
+
+* {
+    font-family: Inter, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--dark);
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #111827;
+    padding: 40px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 480px;
+}
+
+h1 {
+    margin-bottom: 8px;
+}
+
+p {
+    opacity: 0.7;
+    margin-bottom: 24px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: var(--blue);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}

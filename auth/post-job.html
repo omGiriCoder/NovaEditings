@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post a Job – Nova Editings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="post-job.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Post a New Job</h1>
+    <p>Share your requirements and we’ll handle the rest.</p>
+
+    <form id="jobForm">
+        <input type="text" id="title" placeholder="Job Title" required>
+
+        <select id="contentType" required>
+            <option value="">Select Content Type</option>
+            <option value="YouTube">YouTube Video</option>
+            <option value="Podcast">Podcast</option>
+            <option value="Shorts">Reels / Shorts</option>
+        </select>
+
+        <textarea id="description" placeholder="Describe your editing needs" required></textarea>
+
+        <input type="date" id="deadline" required>
+
+        <button type="submit">Submit Job</button>
+    </form>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script src="firebase-auth.js"></script>
+<script src="route-guard.js"></script>
+<script src="post-job.js"></script>
+
+<script>
+    protectRoute("client");
+</script>
+
+</body>
+</html>

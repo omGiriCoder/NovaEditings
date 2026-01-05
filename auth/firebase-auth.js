@@ -1,3 +1,5 @@
+const ADMIN_EMAIL = "omgoswami4114@gmail.com";
+
 const firebaseConfig = {
     apiKey: "AIzaSyBBZlDnqUvgs0FypnlrmrLzXvzlNTqSQB0",
     authDomain: "nova-editings.firebaseapp.com",
@@ -5,23 +7,33 @@ const firebaseConfig = {
     appId: "1:951695956594:web:2dca790f249ec09a97c0eb"
 };
 
-// ✅ INIT ONCE ONLY
+// ✅ Initialize Firebase ONCE
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 
 const auth = firebase.auth();
 
-// GOOGLE LOGIN
+// ================= GOOGLE LOGIN =================
 function googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider();
+
     auth.signInWithPopup(provider)
-        .then(() => {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    window.location.href = "role-selection.html";
-                }
-            });
+        .then((result) => {
+            const user = result.user;
+
+            if (!user) return;
+
+            // 🔐 ADMIN → admin dashboard
+            if (user.email === ADMIN_EMAIL) {
+                window.location.href = "admin-dashboard.html";
+                return;
+            }
+
+            // 👤 NORMAL USERS → role selection
+            window.location.href = "role-selection.html";
         })
-        .catch(err => alert(err.message));
+        .catch((err) => {
+            alert(err.message);
+        });
 }
