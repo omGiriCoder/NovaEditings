@@ -1,29 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard – Nova Editings</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard – Nova Editings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="admin-dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin-dashboard.css">
 </head>
 <body>
 
-<div class="container">
-    <h1>Admin – Job Management</h1>
-    <p>Review and assign client jobs</p>
+<div class="dashboard">
 
-    <div id="jobsList">
-    <p>Loading jobs...</p>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="logo">Nova<span>Editings</span></h2>
+
+    <nav>
+      <a class="nav-link active" data-view="new">New Jobs</a>
+      <a class="nav-link" data-view="progress">In Progress</a>
+      <a class="nav-link" data-view="payments">Pending Payments</a>
+      <a class="nav-link" data-view="completed">Completed</a>
+      <a class="nav-link" data-view="settings">Settings</a>
+    </nav>
+
+    <button class="logout" id="logoutBtn">Logout</button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="content"></main>
+
 </div>
 
-</div>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-
-<script>
-  emailjs.init("yRCSx6WIYfcC8x4KG");
-</script>
+<div id="toast" class="toast"></div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -31,7 +40,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script src="firebase-auth.js"></script>
-<script src="admin-dashboard.js"></script>
+<script src="route-guard.js"></script>
+<script src="admin-dashboard.js"></script>          
+
+<script>
+  protectRoute("admin");
+</script>
 
 </body>
 </html>

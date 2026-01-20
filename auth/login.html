@@ -18,24 +18,43 @@
     </button>
 
     <div class="divider">OR</div>
-
-    <input type="tel" id="phone" placeholder="+91XXXXXXXXXX">
-    <div id="recaptcha"></div>
-
-    <button class="primary-btn" onclick="sendOTP()">Send OTP</button>
-
-    <input type="text" id="otp" placeholder="Enter OTP" style="display:none">
-    <button class="primary-btn" id="verifyBtn" onclick="verifyOTP()" style="display:none">
-        Verify OTP
-    </button>
 </div>
 
-<!-- ✅ Firebase SDKs (REQUIRED) -->
+<!-- ✅ Firebase SDKs (ORDER MATTERS) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- ✅ Your auth logic -->
+<!-- ✅ Your Firebase init + auth -->
 <script src="firebase-auth.js"></script>
+
+<!-- ✅ AUTO-REDIRECT (FINAL, WORKING VERSION) -->
+<script>
+  const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) return;
+
+    // stop listening immediately
+    unsubscribe();
+
+    const db = firebase.firestore();
+    const snap = await db.collection("users").doc(user.uid).get();
+
+    if (!snap.exists || !snap.data().role) {
+      window.location.replace("role-selection.html");
+      return;
+    }
+
+    const role = snap.data().role;
+
+    if (role === "admin") {
+      window.location.replace("admin-dashboard.html");
+    } else if (role === "client") {
+      window.location.replace("client-dashboard.html");
+    } else if (role === "editor") {
+      window.location.replace("editor-dashboard.html");
+    }
+  });
+</script>
 
 </body>
 </html>

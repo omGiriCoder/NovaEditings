@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Post a Job – Nova Editings</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="post-job.css">
+  <meta charset="UTF-8">
+  <title>Post a Job – Nova Editings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="client-dashboard.css">
 </head>
 <body>
 
-<div class="container">
+<div class="dashboard">
+
+  <aside class="sidebar">
+    <h2 class="logo">Nova<span>Editings</span></h2>
+
+    <nav>
+      <a href="client-dashboard.html" class="nav-link">← Back</a>
+    </nav>
+  </aside>
+
+  <main class="main">
     <h1>Post a New Job</h1>
-    <p>Share your requirements and we’ll handle the rest.</p>
+    <p class="subtitle">Describe your project clearly to get better editors</p>
 
-    <form id="jobForm">
-        <input type="text" id="title" placeholder="Job Title" required>
+    <div class="card">
+      <input id="title" placeholder="Job title (e.g. YouTube Video Editor)" />
+      <textarea id="description" placeholder="Describe your project requirements"></textarea>
 
-        <select id="contentType" required>
-            <option value="">Select Content Type</option>
-            <option value="YouTube">YouTube Video</option>
-            <option value="Podcast">Podcast</option>
-            <option value="Shorts">Reels / Shorts</option>
-        </select>
+      <div class="row">
+        <input id="budget" type="number" placeholder="Budget (₹)" />
+        <input id="deadline" type="date" />
+      </div>
 
-        <textarea id="description" placeholder="Describe your editing needs" required></textarea>
-
-        <input type="date" id="deadline" required>
-
-        <button type="submit">Submit Job</button>
-    </form>
+      <button onclick="postJob()">Post Job</button>
+    </div>
+  </main>
 </div>
 
-<!-- Firebase -->
+<div id="toast" class="toast"></div>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script src="firebase-auth.js"></script>
 <script src="route-guard.js"></script>
-<script src="post-job.js"></script>
+<script src="client-dashboard.js"></script>
 
-
-<script>
-    protectRoute("client");
-</script>
-
+<script>protectRoute("client");</script>
 </body>
 </html>

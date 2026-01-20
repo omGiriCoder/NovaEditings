@@ -1,86 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Client Dashboard – Nova Editings</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <title>Client Dashboard — Nova Editings</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="client-dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="client-dashboard.css">
 </head>
 <body>
 
 <div class="dashboard">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2 class="logo">Nova<span>Editings</span></h2>
 
-<nav>
-    <a href="client-dashboard.html" class="active">Overview</a>
-    <a href="post-job.html">Post Job</a>
-    <a href="client-jobs.html">My Jobs</a>
-</nav>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="logo">Nova<span>Editings</span></h2>
 
-        <button class="logout" id="logoutBtn">Logout</button>
-    </aside>
+    <nav>
+      <a class="nav-link active" data-view="overview">Overview</a>
+      <a class="nav-link" data-view="post">Post Job</a>
+      <a class="nav-link" data-view="jobs">Posted Jobs</a>
+      <a class="nav-link" data-view="settings">Settings</a>
+    </nav>
 
-    <!-- Main -->
-    <main class="main">
-        <h1>Welcome, Client 👋</h1>
-        <p class="subtitle">Post jobs and hire top video editors</p>
+    <button class="logout" id="logoutBtn">Logout</button>
+  </aside>
 
-        <!-- Stats -->
-        <div class="stats">
-            <div class="card">
-                <h3>8</h3>
-                <p>Jobs Posted</p>
-            </div>
-            <div class="card">
-                <h3>2</h3>
-                <p>Active Hires</p>
-            </div>
-            <div class="card">
-                <h3>₹62,000</h3>
-                <p>Total Spend</p>
-            </div>
-        </div>
-
-        <!-- Jobs -->
-        <section class="section">
-            <h2>Your Recent Job Posts</h2>
-
-            <div class="job">
-                <div>
-                    <h3>YouTube Long-Form Editor</h3>
-                    <p>Status: Accepting Applications</p>
-                </div>
-                <button>View</button>
-            </div>
-
-            <div class="job">
-                <div>
-                    <h3>Instagram Reels Editor</h3>
-                    <p>Status: Editor Hired</p>
-                </div>
-                <button>View</button>
-            </div>
-
-            <button href="post-job.html" class="post-job">+ Post New Job</button>
-        </section>
-    </main>
+  <!-- MAIN -->
+  <main class="main" id="content">
+    <!-- content injected by JS -->
+  </main>
 </div>
 
-<!-- Firebase -->
+<div id="toast" class="toast"></div>
+
+<!-- Firebase SDKs (compat style) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
+<!-- Provide your firebase-auth.js which initializes firebase, auth and db -->
 <script src="firebase-auth.js"></script>
 <script src="route-guard.js"></script>
 <script src="client-dashboard.js"></script>
 
 <script>
-    protectRoute("client");
+  // protect the page, ensure only clients can enter (route-guard.js)
+  protectRoute("client");
 </script>
 
 </body>

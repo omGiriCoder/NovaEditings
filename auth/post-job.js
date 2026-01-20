@@ -19,15 +19,16 @@ document.getElementById("jobForm").addEventListener("submit", async (e) => {
     });
 
     try {
-        const ref = await db.collection("jobs").add({
-            clientId: user.uid,
-            title,
-            description,
-            contentType,
-            deadline,
-            status: "pending",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
+await db.collection("jobs").add({
+  title,
+  description,
+  budget,
+  clientId: user.uid,
+  status: "new",
+  paymentStatus: null,
+  createdAt: firebase.firestore.FieldValue.serverTimestamp()
+});
+
 
         console.log("Job saved with ID:", ref.id);
         alert("Job submitted successfully");

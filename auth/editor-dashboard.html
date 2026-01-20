@@ -1,73 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Editor Dashboard – Nova Editings</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Editor Dashboard – Nova Editings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="editor-dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="editor-dashboard.css">
 </head>
 <body>
 
 <div class="dashboard">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2 class="logo">Nova<span>Editings</span></h2>
 
-        <nav>
-            <a href="editor-dashboard.html" class="active">Overview</a>
-            <a>Profile</a>
-            <a href="editor-jobs.html">My Jobs</a>
-            <a>Portfolio</a>
-        </nav>
+  <!-- SIDEBAR (STATIC) -->
+  <aside class="sidebar">
+    <h2 class="logo">Nova<span>Editings</span></h2>
 
-        <button class="logout" id="logoutBtn">Logout</button>
-    </aside>
+    <nav>
+      <a class="nav-link active" data-view="overview">Overview</a>
+      <a class="nav-link" data-view="jobs">My Jobs</a>
+      <a class="nav-link" data-view="portfolio">Portfolio</a>
+      <a class="nav-link" data-view="profile">Profile</a>
+    </nav>
 
-    <!-- Main -->
-    <main class="main">
-        <h1>Welcome, Editor 👋</h1>
-        <p class="subtitle">Find high-paying video editing jobs</p>
+    <button class="logout" id="logoutBtn">Logout</button>
+  </aside>
 
-        <!-- Stats -->
-        <div class="stats">
-            <div class="card">
-                <h3>12</h3>
-                <p>Jobs Applied</p>
-            </div>
-            <div class="card">
-                <h3>3</h3>
-                <p>Active Projects</p>
-            </div>
-            <div class="card">
-                <h3>₹45,000</h3>
-                <p>Total Earnings</p>
-            </div>
-        </div>
+  <!-- MAIN CONTENT (CHANGES) -->
+  <main class="main" id="content"></main>
 
-        <!-- Jobs -->
-        <section class="section">
-            <h2>Recent Job Listings</h2>
-
-            <div class="job">
-                <div>
-                    <h3>YouTube Video Editor</h3>
-                    <p>Budget: ₹5,000 – ₹8,000</p>
-                </div>
-                <button>Apply</button>
-            </div>
-
-            <div class="job">
-                <div>
-                    <h3>Reels & Shorts Editor</h3>
-                    <p>Budget: ₹2,000 / video</p>
-                </div>
-                <button>Apply</button>
-            </div>
-        </section>
-    </main>
 </div>
+
+<div id="toast" class="toast"></div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -79,7 +43,7 @@
 <script src="editor-dashboard.js"></script>
 
 <script>
-    protectRoute("editor");
+  protectRoute("editor");
 </script>
 
 </body>

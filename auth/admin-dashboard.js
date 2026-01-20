@@ -1,88 +1,197 @@
+let editorsCache = [];
 
 
-const db = firebase.firestore();
+const content = document.getElementById("content");
+let currentView = "new";
 
-// 🔐 Admin-only access
-auth.onAuthStateChanged(user => {
-    if (!user) {
-        window.location.href = "login.html";
-        return;
-    }
-
-    loadJobs();
+/* ---------- NAV ---------- */
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.onclick = () => {
+    document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
+    link.classList.add("active");
+    currentView = link.dataset.view;
+    loadView();
+  };
 });
 
+/* ---------- AUTH ---------- */
+auth.onAuthStateChanged(user => {
+  if (!user) return;
+  loadEditors();
+  loadView();
+});
 
-async function loadJobs() {
-    const jobsList = document.getElementById("jobsList");
-    jobsList.innerHTML = "";
+/* ---------- VIEW ROUTER ---------- */
+function loadView() {
+  if (currentView === "new") loadNewJobs();
+  if (currentView === "progress") loadInProgress();
+  if (currentView === "payments") loadPendingPayments();
+  if (currentView === "completed") loadCompleted();
+  if (currentView === "settings") loadSettings();
+}
 
-    const snapshot = await db.collection("jobs").orderBy("createdAt", "desc").get();
+/* ---------- NEW JOBS ---------- */
+async function loadNewJobs() {
+  const snap = await db
+    .collection("jobs")
+    .where("status", "==", "new")
+    .get();
 
-    snapshot.forEach(doc => {
-        const job = doc.data();
+  content.innerHTML = `<h2>New Jobs</h2>`;
 
-        const div = document.createElement("div");
-        div.className = "job";
+  if (snap.empty) {
+    content.innerHTML += `<p style="opacity:.6">No new jobs.</p>`;
+    return;
+  }
 
-div.innerHTML = `
-    <h3>${job.title}</h3>
-    <p><strong>Client ID:</strong> ${job.clientId}</p>
-    <p><strong>Type:</strong> ${job.contentType}</p>
-    <p><strong>Status:</strong> ${job.status}</p>
-    <p>${job.description}</p>
+  snap.forEach(doc => {
+    const job = doc.data(); // ✅ THIS WAS MISSING
 
-    <div class="assign">
-        <input type="text" placeholder="Editor UID" id="editor-${doc.id}">
-        <select id="status-${doc.id}">
-            <option value="pending">Pending</option>
-            <option value="assigned">Assigned</option>
-            <option value="in_progress">In Progress</option>
-            <option value="delivered">Delivered</option>
+    const options = editorsCache
+      .map(e => `<option value="${e.id}">${e.name}</option>`)
+      .join("");
+
+    content.innerHTML += `
+      <div class="job">
+        <h3>${job.title}</h3>
+        <p>${job.description}</p>
+
+        <select id="editor-${doc.id}">
+          <option value="">Select Editor</option>
+          ${options}
         </select>
-        <button onclick="assignJob('${doc.id}')">Update Job</button>
-    </div>
-`;
 
-
-        jobsList.appendChild(div);
-    });
+        <button class="assign" onclick="assignJob('${doc.id}')">
+          Assign
+        </button>
+      </div>
+    `;
+  });
 }
 
+/* ---------- IN PROGRESS ---------- */
+async function loadInProgress() {
+  const snap = await db.collection("jobs")
+    .where("status", "in", ["assigned", "in_progress"])
+    .get();
+
+  content.innerHTML = `<h2>In Progress</h2>`;
+
+  snap.forEach(doc => {
+    const job = doc.data();
+    content.innerHTML += `
+      <div class="job">
+        <h3>${job.title}</h3>
+        <p>Editor: ${job.assignedEditorName || "—"}</p>
+        <p>Status: ${job.status}</p>
+      </div>
+    `;
+  });
+}
+
+/* ---------- PENDING PAYMENTS ---------- */
+async function loadPendingPayments() {
+  const snap = await db.collection("jobs")
+    .where("status", "==", "delivered")
+    .where("paymentStatus", "==", "pending")
+    .get();
+
+  content.innerHTML = `<h2>Pending Payments</h2>`;
+
+  snap.forEach(doc => {
+    const job = doc.data();
+    content.innerHTML += `
+      <div class="job">
+        <h3>${job.title}</h3>
+        <p>Editor delivered</p>
+        <button class="pay" onclick="markAsPaid('${doc.id}')">Mark as Paid</button>
+      </div>
+    `;
+  });
+}
+
+/* ---------- COMPLETED ---------- */
+async function loadCompleted() {
+  const snap = await db.collection("jobs")
+    .where("paymentStatus", "==", "paid")
+    .get();
+
+  content.innerHTML = `<h2>Completed Jobs</h2>`;
+
+  snap.forEach(doc => {
+    const job = doc.data();
+    content.innerHTML += `
+      <div class="job">
+        <h3>${job.title}</h3>
+        <p>Payment Completed</p>
+      </div>
+    `;
+  });
+}
+
+/* ---------- ACTIONS ---------- */
 async function assignJob(jobId) {
-    const editorInput = document.getElementById(`editor-${jobId}`).value;
-    const status = document.getElementById(`status-${jobId}`).value;
+  const select = document.getElementById(`editor-${jobId}`);
+  const editorId = select.value;
 
-    if (!editorInput) {
-        alert("Enter editor UID or name");
-        return;
-    }
+  if (!editorId) {
+    alert("Select an editor first");
+    return;
+  }
 
-    const jobRef = db.collection("jobs").doc(jobId);
-    const jobSnap = await jobRef.get();
-    const jobData = jobSnap.data();
+  const editor = editorsCache.find(e => e.id === editorId);
 
-    // Update job
-    await jobRef.update({
-        assignedEditorId: editorInput,
-        status: status
-    });
+  await db.collection("jobs").doc(jobId).update({
+    assignedEditorId: editorId,
+    assignedEditorName: editor.name,
+    status: "assigned"
+  });
 
-    // 🔔 SEND EMAIL TO CLIENT
-    sendClientEmail(jobData.clientId, jobData.title, status);
-
-    alert("Job updated & client notified");
-    loadJobs();
+  showToast(`Assigned to ${editor.name}`);
+  loadView();
 }
 
-async function sendClientEmail(clientId, jobTitle, status) {
-    const userSnap = await db.collection("users").doc(clientId).get();
-    const clientEmail = userSnap.data().email;
 
-    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-        client_email: clientEmail,
-        job_title: jobTitle,
-        job_status: status
-    });
+async function markAsPaid(jobId) {
+  await db.collection("jobs").doc(jobId).update({
+    paymentStatus: "paid",
+    paidAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  showToast("Payment marked as PAID");
+  loadView();
 }
 
+/* ---------- SETTINGS ---------- */
+function loadSettings() {
+  content.innerHTML = `
+    <h2>Settings</h2>
+    <p>Admin tools coming soon.</p>
+  `;
+}
+
+/* ---------- TOAST ---------- */
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 3000);
+}
+
+async function loadEditors() {
+  const snap = await db
+    .collection("users")
+    .where("role", "==", "editor")
+    .get();
+
+  editorsCache = snap.docs.map(doc => ({
+    id: doc.id,
+    name: doc.data().name || "Unnamed Editor"
+  }));
+}
+
+
+/* ---------- LOGOUT ---------- */
+document.getElementById("logoutBtn").onclick = () => {
+  auth.signOut().then(() => location.href = "login.html");
+};
